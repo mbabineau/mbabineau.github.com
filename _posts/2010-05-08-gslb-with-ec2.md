@@ -61,7 +61,7 @@ This is what such an environment would look like:
 
 When configuring servers to communicate across regions (app servers -> master DB; slave DBs -> master DB), you will need to use IP-based rules for your security groups; traffic from the "app-servers" security group you set up in eu-west-1 is indistinguishable from other traffic to your DB server in us-east-1. This is because cross-region communication is done using external IP addresses. Your best bet is to either automate security group updates or use Elastic IPs.
 
-Note on more complex configurations: distributed backends are hard (see [Brewer's [CAP] theorem](http://en.wikipedia.org/wiki/CAP_theorem)). Multi-region EC2 environments are much easier to implement if your application tolerates the use of 1) regional caches for reads; 2) centralized writes. If you have a choice, stick with the simpler route.
+Note on more complex configurations: distributed backends are hard (see [Brewer's \[CAP\] theorem](http://en.wikipedia.org/wiki/CAP_theorem)). Multi-region EC2 environments are much easier to implement if your application tolerates the use of 1) regional caches for reads; 2) centralized writes. If you have a choice, stick with the simpler route.
 
 As for configuring DNS, several companies have DNS-based GSLB service offerings:
 - [Dynect](http://dyn.com/dynect) - [Traffic Management](http://dyn.com/dynect-traffic-management) (A records only) and [CDN Manager](http://dyn.com/dynect-cdn-manager) (CNAMEs allowed)
