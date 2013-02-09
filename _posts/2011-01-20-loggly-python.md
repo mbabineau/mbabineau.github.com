@@ -4,11 +4,11 @@ title: "loggly-python"
 tagline: "An Open Source Library"
 description: ""
 category: 
-tags: []
+tags: [loggly, python, open source, ops, logging]
 ---
 {% include JB/setup %}
 
-(originally written for EA2D's engineering blog)
+*(originally written for EA2D's engineering blog)*
 
 For centralized logging, we use a service called [Loggly](http://loggly.com).  We forward our logs to Loggly and aggregate them by application and environment.  This gives us a handy web interface for viewing logs across all servers within an application group, and provides some great tools for search, comparison, and alerting.
 
@@ -22,7 +22,7 @@ Fortunately, Loggly has exposed a set of administration [APIs](http://wiki.loggl
 
 You can find it on GitHub:
 
-<https://github.com/mbabineau/loggly-python>
+[https://github.com/mbabineau/loggly-python](https://github.com/mbabineau/loggly-python)
 
 Or install it from PyPI:
 

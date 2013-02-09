@@ -3,11 +3,11 @@ layout: post
 title: "Chef Cookbook for Loggly"
 description: ""
 category: 
-tags: []
+tags: [loggly, open source, chef, ops]
 ---
 {% include JB/setup %}
 
-(originally written for EA2D's engineering blog)
+*(originally written for EA2D's engineering blog)*
 
 As mentioned in a [previous post](http://eng.ea2d.com/loggly-python-an-open-source-library), we aggregate and store our logs using a service called  [Loggly](http://loggly.com).
 
@@ -28,4 +28,4 @@ You can grab it from the Opscode site:
 
 Or from our GitHub repository:
 
-<https://github.com/mbabineau/loggly-cookbook>
+[https://github.com/mbabineau/loggly-cookbook](https://github.com/mbabineau/loggly-cookbook)

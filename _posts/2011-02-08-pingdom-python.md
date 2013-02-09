@@ -4,7 +4,7 @@ title: "pingdom-python"
 tagline: "An Open Source Library"
 description: ""
 category: 
-tags: [api, monitoring, open source, pingdom, python]
+tags: [api, monitoring, open source, pingdom, python, ops]
 ---
 {% include JB/setup %}
 
@@ -14,7 +14,7 @@ The old Pingdom SOAP API was unwieldy and slow.  Fortunately, Pingdom [released]
 
 I've written a Python library for this new API and released it as open source.  For now, it supports only a subset of available resources, but the framework is there for others to be added easily.
 
-<https://github.com/mbabineau/pingdom-python>
+[https://github.com/mbabineau/pingdom-python](https://github.com/mbabineau/pingdom-python)
 
 ### pingdom-python in action
 

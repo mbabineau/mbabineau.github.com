@@ -10,7 +10,7 @@ pygments: true
 # so be sure to set them if your theme uses them.
 #
 title : mikebabineau
-tagline: Site Tagline
+tagline: "I don't always blog, but when I do, it's probably here."
 author :
   name : Mike Babineau
   email : michael.babineau@gmail.com
