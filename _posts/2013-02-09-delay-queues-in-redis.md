@@ -29,22 +29,21 @@ import redis.clients.jedis.Jedis
 
 /**
  * Handles the delaying of queued messages for later retrieval.
- *
- * Messages are unique per queue, and are sorted by the time they [will] have become available.
  */
 class DelayQueueService {
     def redisService
     
     /**
-     * Queue a message for later retrieval. Messages are unique per queue and are deleted upon retrieval. If a given
-     * message already exists, it is updated with the new delay.
+     * Queue a message for later retrieval. Messages are unique per queue and 
+     * are deleted upon retrieval. If a given message already exists, it is 
+     * updated with the new delay.
      *
      * @param queue Queue name
      * @param message
      * @param delay Time in seconds the message should be delayed
      */
     def queueMessage(String queue, String message, Integer delay) {
-        Double time = System.currentTimeMillis()/1000 + delay
+        def time = System.currentTimeMillis()/1000 + delay
 
         redisService.withRedis { Jedis redis ->
             redis.zadd(queue, time, message)
@@ -57,15 +56,15 @@ class DelayQueueService {
      * @param queue Queue name
      */
     def getMessages(String queue) {
-        Double startTime = 0
-        Double endTime = System.currentTimeMillis() / 1000
+        def startTime = 0
+        def endTime = System.currentTimeMillis() / 1000
 
-        return redisService.withRedis { Jedis redis ->
+        redisService.withRedis { Jedis redis ->
             def t = redis.multi()
             def response = t.zrangeByScore(queue, startTime, endTime)
             t.zremrangeByScore(queue, startTime, endTime)
             t.exec()
-            return response.get()
+            response.get()
         }
     }
 }
