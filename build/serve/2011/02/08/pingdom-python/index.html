@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>pingdom-python</title>
+    <meta name="description" content="">
+    <meta name="author" content="Mike Babineau">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">mikebabineau</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>pingdom-python <small>An Open Source Library</small></h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p><a href='http://pingdom.com'>Pingdom</a> is one of several monitoring tools we use at EA2D. Besides alerting us when things go down, we query Pingdom&#8217;s API to include check status in our dashboards.</p>
+
+<p>The old Pingdom SOAP API was unwieldy and slow. Fortunately, Pingdom <a href='http://royal.pingdom.com/2011/03/22/new-pingdom-api-enters-public-beta/'>released</a> a new, JSON-ified REST API that remedied the problems of its predecessor.</p>
+
+<p>I&#8217;ve written a Python library for this new API and released it as open source. For now, it supports only a subset of available resources, but the framework is there for others to be added easily.</p>
+
+<p><a href='https://github.com/mbabineau/pingdom-python'>https://github.com/mbabineau/pingdom-python</a></p>
+
+<h3 id='pingdompython_in_action'>pingdom-python in action</h3>
+
+<p>Set up a Pingdom connection:</p>
+
+<pre><code>&gt;&gt;&gt; import pingdom
+&gt;&gt;&gt; c = pingdom.PingdomConnection(PINGDOM_USERNAME, PINGDOM_PASSWORD)  # Same credentials you use for the Pingdom website</code></pre>
+
+<p>Create a new Pingdom check:</p>
+
+<pre><code>&gt;&gt;&gt; c.create_check(&#39;EA2D Website&#39;, &#39;ea2d.com&#39;, &#39;http&#39;)
+Check:EA2D Website</code></pre>
+
+<p>Get basic information about a Pingdom check:</p>
+
+<pre><code>&gt;&gt;&gt; check = c.get_all_checks([&#39;EA2D Website&#39;])[0]   # Expects a list, returns a list
+&gt;&gt;&gt; check.id
+302632
+&gt;&gt;&gt; check.status
+u&#39;up&#39;</code></pre>
+
+<p>Get more detailed information about a Pingdom check:</p>
+
+<pre><code>&gt;&gt;&gt; check = c.get_check(210702)  # Look up by check ID
+&gt;&gt;&gt; check.lasterrortime
+1289482981</code></pre>
+
+<p>Delete a Pingdom check:</p>
+
+<pre><code>&gt;&gt;&gt; c.delete_check(302632)
+{u&#39;message&#39;: u&#39;Deletion of check was successful!&#39;}</code></pre>
+
+<p>Go check it out on <a href='https://github.com/mbabineau/pingdom-python'>GitHub</a>, or install it directly from PyPI:</p>
+
+<pre><code>sudo easy_install pingdom</code></pre>
+
+<p>If you have any questions, drop me a line: <a href='mailto:michael.babineau@gmail.com'>michael.babineau@gmail.com</a>.</p>
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2011/01/20/loggly-python" title="loggly-python">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/2011/04/06/continuous-deployment-of-ops-configs" title="Continuous Deployment of Ops Configs">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>08 February 2011</span></div>
+
+  
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+    
+
+
+  
+     
+    	<li><a href="/tags.html#api-ref">api <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#monitoring-ref">monitoring <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#open source-ref">open source <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#pingdom-ref">pingdom <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#python-ref">python <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#ops-ref">ops <span>8</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+  </div>
+</div>
+
+
+      </div>
+
+      <footer>
+        <p>&copy; Mike Babineau 2013
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+  </body>
+</html>
+

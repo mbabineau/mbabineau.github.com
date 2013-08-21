@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Continuous Deployment of Ops Configs</title>
+    <meta name="description" content="what">
+    <meta name="author" content="Mike Babineau">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">mikebabineau</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Continuous Deployment of Ops Configs <small></small></h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>A core tenant of DevOps is the notion of &#8220;Infrastructure as Code.&#8221; Provisioning and deployment should be done programmatically, potentially with a configuration management (CM) system such as Chef or Puppet.</p>
+
+<p>Jesse Robbins describes the goal well:</p>
+
+<blockquote>
+<p>“Enable the reconstruction of the business from nothing but a source code repository, an application data backup, and bare metal resources”</p>
+</blockquote>
+
+<p>While CM tools facilitate this reconstruction, there are some tricks for getting the most of your implementation. Below are the key points from a <a href='http://www.slideshare.net/mbabineau/continuous-deployment-for-ops-who-use-chef-and-git'>lightning talk</a> I gave on this at the <a href='http://www.meetup.com/ArchCamp/events/16419122/'>last ArchCamp</a>.</p>
+
+<h3 id='the_wrong_way'>The wrong way</h3>
+
+<p>Using the configuration management server as the system of record. A Chef example is creating and modifying roles directly on the Chef server:</p>
+
+<pre><code>$ knife node create myrole
+$ knife node edit myrole</code></pre>
+
+<p>This decreases visibility and introduces unnecessary risk. Losing the Chef server is now a major event. Yes, you can mitigate this risk with regular backups, but you still lack visibility into changes.</p>
+
+<h3 id='a_better_approach'>A better approach</h3>
+
+<p>Place your CM data into source control and treat that as your system of record. Changes are committed to source control, then deployed to the CM server. Under Jesse&#8217;s description, this buckets CM configs as source code rather than application data.</p>
+
+<p>Going back to the Chef example, your workflow would instead look like:</p>
+
+<pre><code>$ git commit -am &quot;added newfeature to myrole&quot;
+$ knife role from file roles/myrole.json</code></pre>
+
+<p>This gives you an auditable history of every operational config change.</p>
+
+<h3 id='deploying_via_git'>Deploying via git</h3>
+
+<p>But what if instead of deploying Chef changes via knife, you did so using git? Changes to multiple roles or cookbooks could be pushed simultaneously, and with one command.</p>
+
+<p>In other words, this:</p>
+
+<pre><code>$ git commit -am &quot;added newfeature to mycookbook, integrated it with myrole, and added supporting data to mydatabag&quot;
+$ knife cookbook upload mycookbook
+$ knife role from file roles/myrole.json
+$ knife data bag from file mydatabag newitem</code></pre>
+
+<p>Would become:</p>
+
+<pre><code>$ git commit -am &quot;added newfeature to mycookbook, integrated it with myrole, and added supporting data to mydatabag&quot;
+$ git push origin master</code></pre>
+
+<p>This type of deployment can be implemented via a process that monitors the git repo for changes and deploys any changes to the Chef server.</p>
+
+<p>A simplified version of the upload code is:</p>
+
+<pre><code>#!bash
+for cookbook in $(git_diff(&quot;cookbooks&quot;)); do
+    knife cookbook upload $cookbook
+done
+
+for role in $(git_diff(&quot;roles&quot;)); do
+    knife role from file $role
+done
+
+for bag in $(git_diff(&quot;databags&quot;)); do
+    for item in $(git_diff(&quot;items&quot;, $bag)); do
+        knife data bag from file $bag $item
+    done
+done</code></pre>
+
+<p>By putting this on a continuous integration server (Jenkins, BuildBot, etc.) and detecting repository changes through polling or post-commit hooks, you implement continuous deployment of your operational configs.</p>
+
+<p>That wasn&#8217;t so bad, was it?</p>
+
+<p>Don&#8217;t forget to <a href='http://www.slideshare.net/mbabineau/continuous-deployment-for-ops-who-use-chef-and-git'>check out the slides</a>.</p>
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2011/02/08/pingdom-python" title="pingdom-python">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/2011/04/07/loggly-chef-cookbook" title="Chef Cookbook for Loggly">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>06 April 2011</span></div>
+
+  
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+    
+
+
+  
+     
+    	<li><a href="/tags.html#configuration management-ref">configuration management <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#continuous deployment-ref">continuous deployment <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#devops-ref">devops <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#git-ref">git <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#jenkins-ref">jenkins <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#ops-ref">ops <span>8</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+  </div>
+</div>
+
+
+      </div>
+
+      <footer>
+        <p>&copy; Mike Babineau 2013
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+  </body>
+</html>
+

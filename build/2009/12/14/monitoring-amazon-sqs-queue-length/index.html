@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Monitoring Amazon SQS Queue Length</title>
+    <meta name="description" content="">
+    <meta name="author" content="Mike Babineau">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">mikebabineau</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Monitoring Amazon SQS Queue Length <small></small></h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>At ShareThis, we use Amazon SQS for a number of core product features, most notably the delivery of email shares. When you use our widget to share something via email, our system creates a database record and logs a message in a queue. Queued items are asynchronously processed by our message sending service.</p>
+
+<p>We monitor this sending service in a variety of ways, but as any monitoring expert will tell you, it’s tough to anticipate every means by which something can break. Fortunately for us, most of our potential sending issues share a common symptom: the queue backs up.</p>
+
+<p>Amazon exposes SQS queue length through their API, but as there were no tools available for monitoring it, I wrote one in Python and made it available on GitHub: <a href='https://github.com/mbabineau/check_sqs_queue'>check_sqs_queue</a>.</p>
+
+<p>check_sqs_queue can be run as a stand-alone script, emailing alert recipients directly through a configured SMTP server, or as a Nagios plugin. To run it, you must have the <a href='http://code.google.com/p/boto/'>boto</a> library installed, and you must have <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> defined in <code>boto.cfg</code> or a specified config file.</p>
+
+<p>Usage:</p>
+
+<pre><code>check_sqs_queue.py -q &lt;queue name&gt; [-w &lt;warning threshold&gt;] -c &lt;critical threshold&gt; [-n &lt;recipient(s)&gt;] [-f &lt;config file]
+
+Options:
+-f FILE, --config=FILE
+            configuration file
+-q QUEUE, --queue=QUEUE
+            Amazon SQS queue name (name only, not the URL)
+-w WARN, --warning=WARN
+            warning threshold
+-c CRIT, --critical=CRIT
+            critical threshold
+-n RECIPIENT(s), --notify=RECIPIENT(s)
+            comma-separated list of email addresses to notify</code></pre>
+
+<p>By default, check_sqs_queue uses the boto config file:</p>
+
+<pre><code>$ cat /etc/boto.cfg
+[Credentials]
+aws_access_key_id = 123456790ABCDEFGHIJ
+aws_secret_access_key = 0987654321ZXYWVUTSRQPO123456789</code></pre>
+
+<p>Let’s see it in action:</p>
+
+<pre><code>$ check_sqs_queue.py -q test_queue -c 50
+Queue OK: &quot;test_queue&quot; contains 17 messages
+
+$ check_sqs_queue.py -q test_queue -c 10
+Queue CRITICAL: &quot;test_queue&quot; contains 17 messages
+
+$ check_sqs_queue.py -q test_queue -w 10 -c 50
+Queue WARNING: &quot;test_queue&quot; contains 17 messages</code></pre>
+
+<p>By putting SMTP credentials into a specified config file, the script can alert a list of email recipients:</p>
+
+<pre><code>$ cat check_sqs_queue.conf
+[AWS]
+aws_access_key_id = 123456790ABCDEFGHIJ
+aws_secret_access_key = 0987654321ZXYWVUTSRQPO123456789
+
+[SMTP]
+smtp_server = smtp.gmail.com
+smtp_port = 587
+smtp_user = user@example.com
+smtp_password = cleverpassword
+
+$ check_sqs_queue.py -f check_sqs_queue.conf -q test_queue -w 5 \
+-c 10 -n mike@example.com,joe@example.com,dan@example.com
+Queue CRITICAL: &quot;test_queue&quot; contains 17 messages</code></pre>
+
+<p>The resulting email:</p>
+
+<pre><code>Date: Mon, 14 Dec 2009 15:52:44 -0800 (PST)  
+From: user@example.com  
+Subject: Queue CRITICAL: &quot;test_queue&quot; contains 17 messages  
+To: mike@example.com
+
+&quot;test_queue&quot; contains 17 messages</code></pre>
+
+<p>So go ahead and give it a try. If you run into any issues, please feel free to drop me a line: <a href='mailto:michael.babineau@gmail.com'>michael.babineau@gmail.com</a>.</p>
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev disabled"><a>&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/2010/03/02/ssh-to-ec2-instance-id" title="SSH to EC2 Instance ID">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>14 December 2009</span></div>
+
+  
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+    
+
+
+  
+     
+    	<li><a href="/tags.html#aws-ref">aws <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#sqs-ref">sqs <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#monitoring-ref">monitoring <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#python-ref">python <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#boto-ref">boto <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#nagios-ref">nagios <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#icinga-ref">icinga <span>2</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+  </div>
+</div>
+
+
+      </div>
+
+      <footer>
+        <p>&copy; Mike Babineau 2013
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+  </body>
+</html>
+
