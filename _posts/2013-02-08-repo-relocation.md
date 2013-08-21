@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "EA2D Repo Relocation"
+title: "Repo Relocation"
 description: ""
 category: 
 tags: [loggly, pingdom, open source, github]
