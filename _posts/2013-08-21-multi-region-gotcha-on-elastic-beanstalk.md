@@ -3,7 +3,7 @@ layout: post
 title: "Multi Region Gotcha on Elastic Beanstalk"
 description: ""
 category: 
-tags: []
+tags: [aws, elastic beanstalk]
 ---
 {% include JB/setup %}
 
