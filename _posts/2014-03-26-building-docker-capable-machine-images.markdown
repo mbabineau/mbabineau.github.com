@@ -28,7 +28,7 @@ Here is our Packer template:
       "source_ami": "ami-c8bed2f8",
       "instance_type": "m1.small",
       "ssh_username": "ubuntu",
-      "ami_name": "ubuntu-12.04-docker-{{isotime | clean_ami_name}}",
+      "ami_name": "ubuntu-12.04-docker-{% raw %}{{isotime | clean_ami_name}}{% endraw %}",
       "tags": {
         "Release": "12.04 LTS"
       }
