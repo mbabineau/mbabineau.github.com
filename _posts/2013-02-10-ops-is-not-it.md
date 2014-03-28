@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "No, I will not fix your printer (and that's a good thing)"
+title: "Ops != IT"
 description: ""
 category: 
 tags: [startups, ops]
