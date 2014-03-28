@@ -5,6 +5,7 @@ description: ""
 category: 
 tags: [docker, packer, ec2, ami]
 ---
+
 {% include JB/setup %}
 
 Docker allows you to create lightweight and portable containers that encapsulate any application. Your app and its runtime environment are packaged together. Starting your app requires only Docker and your container.
@@ -55,7 +56,7 @@ We take a base Ubuntu 12.04 LTS image and install Docker on it (as per the [offi
 
 This template will create an EC2 AMI. To create other images, simply replace/append the builder with one for [another provider](http://www.packer.io/docs/templates/builders.html).
 
-Note we specify the Docker version in a variable. [Variables](http://www.packer.io/docs/templates/user-variables.html) can be used throughout the template using `{% raw %}{{user `var_name`}}{% endraw %}`.
+Note we specify the Docker version in a variable. [Variables](http://www.packer.io/docs/templates/user-variables.html) can be used throughout the template with ```{% raw %}{{user `var_name`}}{% endraw %}```.
 
 Before we build our image on EC2, we'll need to export our AWS credentials as environment variables:
 {% highlight console %}
