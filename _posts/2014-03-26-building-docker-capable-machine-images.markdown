@@ -58,13 +58,13 @@ This template will create an EC2 AMI. To create other images, simply replace/app
 Note we specify the Docker version in a variable. [Variables](http://www.packer.io/docs/templates/user-variables.html) can be used throughout the template using `{% raw %}{{user `var_name`}}{% endraw %}`.
 
 Before we build our image on EC2, we'll need to export our AWS credentials as environment variables:
-{% highlight bash %}
+{% highlight console %}
 $ export AWS_ACCESS_KEY_ID="your_access_key"
 $ export AWS_SECRET_ACCESS_KEY="your_secret_key"
 {% endhighlight %}
 
 To kick off the build, we invoke `packer build`:
-{% highlight bash %}
+{% highlight console %}
 $ packer build foo.json
 amazon-ebs output will be in this color.
 
@@ -104,7 +104,7 @@ us-west-2: ami-db237fec
 {% endhighlight %}
 
 For EC2, you can copy the AMI to other regions using the AWS Console or [awscli](https://github.com/aws/aws-cli):
-{% highlight bash %}
+{% highlight console %}
 $ aws ec2 copy-image --source-image-id ami-db237fec --source-region us-west-2 --region us-east-1
 {
     "ImageId": "ami-ca232495"
