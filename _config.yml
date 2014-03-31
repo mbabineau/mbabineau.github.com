@@ -21,6 +21,7 @@ author:
 paginate:         5
 
 # Custom vars
-github:           https://github.com/mbabineau
-linkedin:         https://linkedin.com/in/mbabineau
+links:
+    github:       https://github.com/mbabineau
+    linkedin:     https://linkedin.com/in/mbabineau
 
