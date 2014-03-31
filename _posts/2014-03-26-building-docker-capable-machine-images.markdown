@@ -26,7 +26,7 @@ Here is our Packer template:
       "source_ami": "ami-c8bed2f8",
       "instance_type": "m1.small",
       "ssh_username": "ubuntu",
-      "ami_name": "ubuntu-12.04-docker-{{isotime | clean_ami_name}}",
+      "ami_name": "ubuntu-12.04-docker-{% raw %}{{isotime | clean_ami_name}}{% endraw %}",
       "tags": {
         "Release": "12.04 LTS"
       }
@@ -64,7 +64,7 @@ $ export AWS_SECRET_ACCESS_KEY="your_secret_key"
 
 To kick off the build, we invoke `packer build`:
 {% highlight console %}
-$ packer build foo.json
+$ packer build docker.json
 amazon-ebs output will be in this color.
 
 ==> amazon-ebs: Creating temporary keypair: packer 5234c1f7-b8df-871e-9617-61982c79fe01
@@ -86,7 +86,7 @@ amazon-ebs output will be in this color.
     amazon-ebs: ldconfig deferred processing now taking place
 ==> amazon-ebs: Stopping the source instance...
 ==> amazon-ebs: Waiting for the instance to stop...
-==> amazon-ebs: Creating the AMI: ubuntu-12.04-docker-2014-03-28T00-27-35Z
+==> amazon-ebs: Creating the AMI: ubuntu-12.04-docker-2014-03-26T00-27-35Z
     amazon-ebs: AMI: ami-db237fec
 ==> amazon-ebs: Waiting for AMI to become ready...
 ==> amazon-ebs: Adding tags to AMI (ami-db237fec)...
@@ -112,4 +112,4 @@ $ aws ec2 copy-image --source-image-id ami-db237fec --source-region us-west-2 --
 
 Typical build times are ~5-15min, but this could be improved by using a newer release of Ubuntu. (Docker requires a newer kernel than is shipped with Ubuntu 12.04). Cross-region copy times are quick, typically under a minute.
 
-With your new AMI, you should now be able to provision new Docker hosts in just a minute or two.
+With your new AMI, you should now be able to provision Docker hosts in just a minute or two.
