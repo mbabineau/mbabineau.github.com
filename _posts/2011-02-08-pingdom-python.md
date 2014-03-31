@@ -6,7 +6,6 @@ description: ""
 category: 
 tags: [api, monitoring, open source, pingdom, python, ops]
 ---
-{% include JB/setup %}
 
 [Pingdom](http://pingdom.com) is one of several monitoring tools we use at EA2D.  Besides alerting us when things go down, we query Pingdom's API to include check status in our dashboards.
 

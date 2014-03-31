@@ -6,8 +6,6 @@ category:
 tags: [docker, packer, ec2, ami]
 ---
 
-{% include JB/setup %}
-
 Docker allows you to create lightweight and portable containers that encapsulate any application. Your app and its runtime environment are packaged together. Starting your app requires only Docker and your container.
 
 Docker installation is simple, but takes a non-trivial amount of time to complete. Baking Docker into your machine image has the desired effect of minimizing provisioning time, but image creation is typically a hassle.
@@ -28,7 +26,7 @@ Here is our Packer template:
       "source_ami": "ami-c8bed2f8",
       "instance_type": "m1.small",
       "ssh_username": "ubuntu",
-      "ami_name": "ubuntu-12.04-docker-{% raw %}{{isotime | clean_ami_name}}{% endraw %}",
+      "ami_name": "ubuntu-12.04-docker-{{isotime | clean_ami_name}}",
       "tags": {
         "Release": "12.04 LTS"
       }

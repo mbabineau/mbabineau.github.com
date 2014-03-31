@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [aws, cloudwatch, cloudviz, ec2, cloudgrapher]
 ---
-{% include JB/setup %}
 
 I've launched a new service for graphing Amazon CloudWatch metrics, [Cloudgrapher](https://www.cloudgrapher.com).  It's free, it's based off of [cloudviz](https://github.com/mbabineau/cloudviz) and Google App Engine, and I think EC2 users (especially those with highly dynamic environments) will find it pretty handy.
 

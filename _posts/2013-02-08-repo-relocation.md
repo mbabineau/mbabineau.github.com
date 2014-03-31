@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [loggly, pingdom, open source, github]
 ---
-{% include JB/setup %}
 
 Since it looks like EA2D's GitHub account has been deleted (the group doesn't exist anymore), I've moved the (kinda) maintained versions of several open source projects to my personal account.
 

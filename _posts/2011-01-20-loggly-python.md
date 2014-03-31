@@ -6,7 +6,6 @@ description: ""
 category: 
 tags: [loggly, python, open source, ops, logging]
 ---
-{% include JB/setup %}
 
 *(originally written for EA2D's engineering blog)*
 

@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [aws, cloudwatch, cloudviz, open source, ops, monitoring]
 ---
-{% include JB/setup %}
 
 *(originally posted on Bizo's dev blog [here](http://dev.bizo.com/2010/03/introducing-cloudviz.html))*
 

@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [startups, ops]
 ---
-{% include JB/setup %}
 
 Don't confuse ops with office IT. Hire someone else for that.
 

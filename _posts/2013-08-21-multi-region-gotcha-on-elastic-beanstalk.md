@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [aws, elastic beanstalk]
 ---
-{% include JB/setup %}
 
 It's not in the current Elastic Beanstalk documentation, but you can't create a new application version from an S3 file hosted in a different region. Attempts to do so will return this error:
 {% highlight console %}

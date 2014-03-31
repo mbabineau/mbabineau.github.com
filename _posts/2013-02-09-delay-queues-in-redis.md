@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: []
 ---
-{% include JB/setup %}
 
 I needed a way to handle delayed processing of messages in a distributed system. Since I already had Redis running (but no message queue other than Kafka), I used a sorted set as a simple delay queue.
 

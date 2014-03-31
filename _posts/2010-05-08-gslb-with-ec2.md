@@ -6,7 +6,6 @@ description: "Global Server Load Balancing (GSLB) on Amazon EC2"
 category: 
 tags: [aws, ec2, gslb, ops]
 ---
-{% include JB/setup %}
 
 *(originally posted on Bizo's dev blog [here](http://dev.bizo.com/2010/05/improving-global-application.html))*
 

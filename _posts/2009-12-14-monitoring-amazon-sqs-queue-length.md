@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [aws, sqs, monitoring, python, boto, nagios, icinga]
 ---
-{% include JB/setup %}
 
 At ShareThis, we use Amazon SQS for a number of core product features, most notably the delivery of email shares. When you use our widget to share something via email, our system creates a database record and logs a message in a queue. Queued items are asynchronously processed by our message sending service.
 

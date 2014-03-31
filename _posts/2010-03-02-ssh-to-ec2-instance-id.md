@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: []
 ---
-{% include JB/setup %}
 
 I often find myself looking up EC2 nodes by instance ID so I can grab the external DNS name and SSH in. Fed up with the extra “ec2-describe-instance , copy, paste” layer, I threw together a function (basically a fancy alias) to SSH into an EC2 instance referenced by ID.
 

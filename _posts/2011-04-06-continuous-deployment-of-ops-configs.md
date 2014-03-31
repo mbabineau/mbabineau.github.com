@@ -5,7 +5,6 @@ description: "what"
 category: 
 tags: [configuration management, continuous deployment, devops, git, jenkins, ops]
 ---
-{% include JB/setup %}
 
 A core tenant of DevOps is the notion of "Infrastructure as Code." Provisioning and deployment should be done programmatically, potentially with a configuration management (CM) system such as Chef or Puppet.
 

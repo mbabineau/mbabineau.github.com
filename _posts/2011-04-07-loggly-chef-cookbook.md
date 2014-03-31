@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [loggly, open source, chef, ops]
 ---
-{% include JB/setup %}
 
 *(originally written for EA2D's engineering blog)*
 

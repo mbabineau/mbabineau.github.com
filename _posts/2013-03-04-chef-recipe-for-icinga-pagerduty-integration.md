@@ -5,7 +5,6 @@ description: ""
 category: 
 tags: [chef, pagerduty, monitoring, ops, icinga, nagios, open source]
 ---
-{% include JB/setup %}
 
 I wrote a Chef recipe for enabling PagerDuty support in Icinga. With luck, it'll be merged into Marius Ducea's [icinga cookbook](https://github.com/mdxp/icinga-cookbook). The code is [here](https://github.com/mdxp/icinga-cookbook/pull/11).
 
